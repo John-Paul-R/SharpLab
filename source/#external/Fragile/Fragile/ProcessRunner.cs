@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Text;
 using Fragile.Internal;
 using Fragile.Internal.WindowObjectAccessControl;
@@ -22,8 +21,6 @@ namespace Fragile {
         };
 
         private readonly ProcessRunnerConfiguration _configuration;
-        private readonly SecurityIdentifier _essentialAccessCapabilityIdentifier;
-        private readonly byte[] _essentialAccessCapabilitySidBytes;
         private readonly string _exeFilePath;
         private readonly StringBuilder _commandLine;
 
@@ -32,9 +29,6 @@ namespace Fragile {
         public ProcessRunner(ProcessRunnerConfiguration configuration) {
             _configuration = configuration;
 
-            _essentialAccessCapabilityIdentifier = new SecurityIdentifier(_configuration.EssentialAccessCapabilitySid);
-            _essentialAccessCapabilitySidBytes = new byte[_essentialAccessCapabilityIdentifier.BinaryLength];
-            _essentialAccessCapabilityIdentifier.GetBinaryForm(_essentialAccessCapabilitySidBytes, 0);
 
             _exeFilePath = Path.Combine(_configuration.WorkingDirectoryPath, _configuration.ExeFileName);
             _commandLine = new StringBuilder(_exeFilePath.Length + 2)
@@ -54,24 +48,24 @@ namespace Fragile {
                 AccessControlType.Allow
             ));
             workingDirectory.SetAccessControl(workingDirectorySecurity);*/
+            //
+            // var windowStationHandle = User32.GetProcessWindowStation();
+            // var windowStationSecurity = new WindowObjectSecurity(new WindowObjectNoCloseHandle(windowStationHandle), AccessControlSections.Access);
+            // windowStationSecurity.AddAccessRule(new WindowObjectAccessRule(
+            //     _essentialAccessCapabilityIdentifier,
+            //     WindowStationRights.ReadAttributes,
+            //     AccessControlType.Allow
+            // ));
+            // windowStationSecurity.Persist();
 
-            var windowStationHandle = User32.GetProcessWindowStation();
-            var windowStationSecurity = new WindowObjectSecurity(new WindowObjectNoCloseHandle(windowStationHandle), AccessControlSections.Access);
-            windowStationSecurity.AddAccessRule(new WindowObjectAccessRule(
-                _essentialAccessCapabilityIdentifier,
-                WindowStationRights.ReadAttributes,
-                AccessControlType.Allow
-            ));
-            windowStationSecurity.Persist();
-
-            var desktopHandle = User32.GetThreadDesktop(Kernel32.GetCurrentThreadId());
-            var desktopSecurity = new WindowObjectSecurity(new WindowObjectNoCloseHandle(desktopHandle), AccessControlSections.Access);
-            desktopSecurity.AddAccessRule(new WindowObjectAccessRule(
-                _essentialAccessCapabilityIdentifier,
-                DesktopRights.ReadObjects,
-                AccessControlType.Allow
-            ));
-            desktopSecurity.Persist();
+            // var desktopHandle = User32.GetThreadDesktop(Kernel32.GetCurrentThreadId());
+            // var desktopSecurity = new WindowObjectSecurity(new WindowObjectNoCloseHandle(desktopHandle), AccessControlSections.Access);
+            // desktopSecurity.AddAccessRule(new WindowObjectAccessRule(
+            //     _essentialAccessCapabilityIdentifier,
+            //     DesktopRights.ReadObjects,
+            //     AccessControlType.Allow
+            // ));
+            // desktopSecurity.Persist();
 
             _initialSetupCompleted = true;
         }
@@ -158,7 +152,7 @@ namespace Fragile {
             var capabilityListHandle = default(GCHandle);
 
             try {
-                workingDirectoryAccessCapabilitySidHandle = GCHandle.Alloc(_essentialAccessCapabilitySidBytes, GCHandleType.Pinned);
+                // workingDirectoryAccessCapabilitySidHandle = GCHandle.Alloc(_essentialAccessCapabilitySidBytes, GCHandleType.Pinned);
                 var capability = new AdvApi32.SID_AND_ATTRIBUTES {
                     Sid = workingDirectoryAccessCapabilitySidHandle.AddrOfPinnedObject(),
                     Attributes = (uint)AdvApi32.GroupAttributes.SE_GROUP_ENABLED

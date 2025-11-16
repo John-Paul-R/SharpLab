@@ -86,16 +86,16 @@ try {
         throw "dotnet build failed with exit code $LastExitCode"
     }
 
-    $containerCapabilityId = New-Object Security.Principal.SecurityIdentifier @(
-        'S-1-15-3-1024-4233803318-1181731508-1220533431-3050556506-2713139869-1168708946-594703785-1824610955'
-    )
-    $aclRule = New-Object Security.AccessControl.FileSystemAccessRule @(
-        $containerCapabilityId,
-        [Security.AccessControl.FileSystemRights]::ReadAndExecute,
-        ([Security.AccessControl.InheritanceFlags]::ContainerInherit -bor [Security.AccessControl.InheritanceFlags]::ObjectInherit),
-        [Security.AccessControl.PropagationFlags]::None,
-        [Security.AccessControl.AccessControlType]::Allow
-    )
+#     $containerCapabilityId = New-Object Security.Principal.SecurityIdentifier @(
+#         'S-1-15-3-1024-4233803318-1181731508-1220533431-3050556506-2713139869-1168708946-594703785-1824610955'
+#     )
+#     $aclRule = New-Object Security.AccessControl.FileSystemAccessRule @(
+#         $containerCapabilityId,
+#         [Security.AccessControl.FileSystemRights]::ReadAndExecute,
+#         ([Security.AccessControl.InheritanceFlags]::ContainerInherit -bor [Security.AccessControl.InheritanceFlags]::ObjectInherit),
+#         [Security.AccessControl.PropagationFlags]::None,
+#         [Security.AccessControl.AccessControlType]::Allow
+#     )
 
     $binPath = './bin/Debug/net9.0'
     $acl = Get-Acl $binPath

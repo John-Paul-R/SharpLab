@@ -21,6 +21,9 @@ services:
   tags: ["assets"]
   args: -Command "npm run start"
   workingDirectory: source/WebApp
+#  bindings:
+#  - protocol: http
+#    port: 44200
 
 - name: webapp-server
   tags: ["server"]

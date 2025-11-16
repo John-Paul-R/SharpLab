@@ -23,6 +23,7 @@ namespace SharpLab.WebApp.Server.Assets {
 
             var html = new HtmlDocument();
             html.LoadHtml(htmlString);
+            Console.WriteLine("LoadHtml");
 
             foreach (var link in html.DocumentNode.Descendants("link")) {
                 AdjustUrlAttributeIfAny(link, "href", htmlUrl);
@@ -32,6 +33,7 @@ namespace SharpLab.WebApp.Server.Assets {
                 AdjustUrlAttributeIfAny(script, "src", htmlUrl);
             }
 
+            Console.WriteLine("GetIndexHtmlContentAsync: {0}", html.DocumentNode.OuterHtml);
             return html.DocumentNode.OuterHtml.ToString();
         }
 
@@ -50,6 +52,7 @@ namespace SharpLab.WebApp.Server.Assets {
         private async Task<(Uri url, string content)> GetRawIndexHtmlAsync(CancellationToken cancellationToken) {
             using var client = _httpClientFactory.CreateClient();
 
+            Console.WriteLine("GetRawIndexHtmlAsync: {0}", _latestUrlAbsolute);
             var indexUrlRelative = await client.GetStringAsync(_latestUrlAbsolute, cancellationToken);
             var indexUrl = new Uri(_baseUrl, new Uri(indexUrlRelative, UriKind.Relative));
 

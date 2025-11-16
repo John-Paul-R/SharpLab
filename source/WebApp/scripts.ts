@@ -15,7 +15,10 @@ const latest = task('latest', () => jetpack.writeAsync(
     `${outputSharedRoot}/latest`, htmlOutputPath.replace(outputSharedRoot, '').replace(/^[\\/]/, '')
 ));
 
-const cm6PreviewRoot = `${dirname}/node_modules/mirrorsharp-codemirror-6-preview`;
+const cm6PreviewRoot = '/home/johnp/repos/SharpLab/source/#external/mirrorsharp-codemirror-6-preview/WebAssets';//realpathSync(`${dirname}/node_modules/mirrorsharp-codemirror-6-preview`);
+// const npmCliPath = '/home/johnp/.local/share/fnm/node-versions/v24.11.1/installation/lib/node_modules/npm/bin/npm-cli.js';
+
+// const cm6PreviewRoot = `${dirname}/node_modules/mirrorsharp-codemirror-6-preview`;
 const installCM6PreviewModules = task('install:cm6-preview-modules', async () => {
     await exec2('npm', ['install'], { cwd: cm6PreviewRoot });
 }, {

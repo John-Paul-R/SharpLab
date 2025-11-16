@@ -4,6 +4,7 @@
     <AssemblyName>SharpLab.WebApp.Server</AssemblyName>
     <RootNamespace>SharpLab.WebApp.Server</RootNamespace>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>

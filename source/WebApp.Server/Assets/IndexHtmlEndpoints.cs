@@ -32,12 +32,16 @@ namespace SharpLab.WebApp.Server.Assets {
         }
 
         public async Task StartAsync() {
+            Console.WriteLine("IndexHtmlEndpoints.StartAsync");
             var started = await TryStartAsync();
             if (!started) {
                 _indexHtmlStatusCode = (int)HttpStatusCode.InternalServerError;
                 _indexHtmlBytes = Encoding.UTF8.GetBytes("<!DOCTYPE html!><html><head><title></title></head><body>Application startup failed: could not load index.html from the assets storage.</body></html>");
                 // Edge case, so not using hosted service or similar
+                Console.WriteLine("IndexHtmlEndpoints.StartAsync -- Failed! -- Scheduling retry.");
                 ScheduleStartRetry();
+            } else {
+                Console.WriteLine("IndexHtmlEndpoints.StartAsync -- Started normally!");
             }
         }
 

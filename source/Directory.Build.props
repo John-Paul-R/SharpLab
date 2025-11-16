@@ -9,5 +9,8 @@
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">$(MSBuildThisFileDirectory)</SolutionDir>
     <SourcePathSharpLabTargetFrameworksFix>true</SourcePathSharpLabTargetFrameworksFix>
+    <!-- Override RID for Arch Linux to use standard linux-x64 -->
+    <NETCoreSdkRuntimeIdentifier>linux-x64</NETCoreSdkRuntimeIdentifier>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
 </Project>
